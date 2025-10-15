@@ -1,0 +1,49 @@
+{
+    "name": "logipro/chatbot-php",
+    "type": "app",
+    "description": "Client PHP for Chatbot API",
+    "keywords": ["php", "DDT"],
+    "homepage": "https://github.com/frederic100/chatbot-php",
+    "license": "MIT",
+    "minimum-stability": "stable",
+    "authors": [
+        {
+            "name": "Frédéric Royet",
+            "email": "frederic.royet@logipro.com",
+            "homepage": "https://www.linkedin.com/in/frederic-royet-42568566/",
+            "role": "Project Founder"
+        }
+    ],
+    "require": {
+        "php": "7.4.*",
+        "symfony/http-client": "^5.4",
+        "symfony/http-foundation": "^5.4",
+        "symfony/mime": "^5.4"
+    },
+    "require-dev": {
+        "infection/extension-installer": "0.1.2",
+        "infection/infection": "^0.31.2",
+        "phpstan/phpdoc-parser": "2.*",
+        "phpstan/phpstan": "2.*",
+        "phpunit/phpunit": "^9",
+        "squizlabs/php_codesniffer": "3.*",
+        "behat/behat": "^3.14"
+    },
+    "autoload": {
+        "psr-4" : {
+            "ChatbotPhp\\" : "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4" : {
+            "Tests\\Unit\\" : "tests/unit",
+            "Tests\\Features\\": "tests/features",
+            "Tests\\Integration\\": "tests/integration"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "infection/extension-installer": true
+        }
+    }
+}
