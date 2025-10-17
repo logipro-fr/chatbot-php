@@ -5,16 +5,18 @@
   backupGlobals="false"
   colors="true"
   bootstrap="tests/bootstrap.php"
-  cacheDirectory="var/.phpunit.cache">
-  <coverage/>
+  cacheResult="false">
+  <coverage>
+    <report>
+      <html outputDirectory="var"/>
+    </report>
+    <include>
+      <directory suffix=".php">src</directory>
+    </include>
+  </coverage>
   <testsuites>
     <testsuite name="all">
       <directory suffix="Test.php">tests/unit</directory>
     </testsuite>
   </testsuites>
-  <source>
-    <include>
-      <directory suffix=".php">src</directory>
-    </include>
-  </source>
 </phpunit>
