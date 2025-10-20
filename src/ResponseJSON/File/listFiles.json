@@ -1,0 +1,20 @@
+{
+    "success": true,
+    "data": {
+        "files": [
+            {
+                "object": "file",
+                "id": "file-abc123",
+                "purpose": "assistants",
+                "filename": "document.pdf",
+                "bytes": 1024,
+                "created_at": 1234567890,
+                "expires_at": null,
+                "status": "processed",
+                "status_details": null,
+                "original_filename": "document.pdf"
+            }
+        ],
+        "count": 1
+    }
+}

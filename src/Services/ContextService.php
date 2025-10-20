@@ -25,7 +25,7 @@ class ContextService
     {
             $response = $this->httpClient->request('POST', $this->apiUrls->createContext(), [
                 'json' => [
-                    'contextMessage' => $dto->contextMessage
+                    'ContextMessage' => $dto->contextMessage
                 ]
             ]);
             return $response->getContent();

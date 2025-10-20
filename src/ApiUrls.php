@@ -11,7 +11,7 @@ class ApiUrls
     public const CONTINUE_CONVERSATION = '/v1/conversations/continue';
     public const VIEW_CONVERSATION = '/v1/conversations';
 
-    public const CREATE_CONTEXT = '/v1/context/make';
+    public const CREATE_CONTEXT = '/v1/context/Make';
     public const VIEW_CONTEXT = '/v1/contexts';
     public const UPDATE_CONTEXT = '/v1/contexts';
     public const DELETE_CONTEXT = '/v1/contexts';
@@ -61,5 +61,25 @@ class ApiUrls
     public function deleteContext(): string
     {
         return $this->baseUrl . self::DELETE_CONTEXT;
+    }
+
+    public function uploadFile(): string
+    {
+        return $this->baseUrl . self::UPLOAD_FILE;
+    }
+
+    public function listFiles(): string
+    {
+        return $this->baseUrl . self::LIST_FILES;
+    }
+
+    public function viewFile(string $fileId): string
+    {
+        return $this->baseUrl . self::VIEW_FILE . '?id=' . urlencode($fileId);
+    }
+
+    public function deleteFile(): string
+    {
+        return $this->baseUrl . self::DELETE_FILE;
     }
 }

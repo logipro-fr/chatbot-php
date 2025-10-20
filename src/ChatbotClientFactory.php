@@ -26,7 +26,7 @@ class ChatbotClientFactory
      */
     private function callableResponse(string $method, string $url, array $options): MockResponse
     {
-        if ($method == 'POST' && str_ends_with($url, '/v1/context/make')) {
+        if ($method == 'POST' && str_ends_with($url, '/v1/context/Make')) {
             return $this->postV1ContextMakeMockResponse();
         }
         if ($method == 'GET' && str_contains($url, '/v1/contexts?id=')) {
