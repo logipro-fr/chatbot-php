@@ -5,9 +5,16 @@ namespace ChatbotPhp\Tests;
 use ChatbotPhp\ApiUrls;
 use ChatbotPhp\ChatbotClient;
 use ChatbotPhp\ChatbotClientFactory;
+use ChatbotPhp\DTO\Assistant\AssistantCreateDTO;
+use ChatbotPhp\DTO\Assistant\AssistantDeleteDTO;
+use ChatbotPhp\DTO\Assistant\AssistantUpdateDTO;
+use ChatbotPhp\DTO\Assistant\AssistantViewDTO;
 use ChatbotPhp\DTO\Context\ContextCreateDTO;
 use ChatbotPhp\DTO\Context\ContextDeleteDTO;
 use ChatbotPhp\DTO\Context\ContextUpdateDTO;
+use ChatbotPhp\DTO\File\FileUploadDTO;
+use ChatbotPhp\DTO\File\FileViewDTO;
+use ChatbotPhp\DTO\File\FileDeleteDTO;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -129,5 +136,178 @@ class ChatbotClientTest extends TestCase
         $property->setAccessible(true);
 
         $this->assertSame($customApiUrls, $property->getValue($client));
+    }
+
+    public function testUploadFile(): void
+    {
+        $filePath = __DIR__ . '/../resources/test-document.pdf';
+        $dto = new FileUploadDTO($filePath, 'assistants');
+
+        $response = $this->client->uploadFile($dto);
+
+        /** @var array<string, mixed> */
+        $responseData = json_decode($response, true);
+        $this->assertTrue(isset($responseData['success']));
+        $this->assertTrue($responseData['success']);
+        $data = $responseData['data'];
+        $this->assertIsArray($data);
+        $this->assertTrue(isset($data['file_id']));
+        $this->assertTrue(isset($data['filename']));
+        $this->assertTrue(isset($data['purpose']));
+        $this->assertTrue(isset($data['size']));
+        /** @var string $fileId */
+        $fileId = $data['file_id'];
+        $this->assertStringStartsWith('fil-', $fileId);
+        $this->assertEquals('document.pdf', $data['filename']);
+        $this->assertEquals('assistants', $data['purpose']);
+    }
+
+    public function testListFiles(): void
+    {
+        $response = $this->client->listFiles();
+
+        /** @var array<string, mixed> */
+        $responseData = json_decode($response, true);
+        $this->assertTrue(isset($responseData['success']));
+        $this->assertTrue($responseData['success']);
+        $data = $responseData['data'];
+        $this->assertIsArray($data);
+        $this->assertTrue(isset($data['files']));
+        $this->assertIsArray($data['files']);
+    }
+
+    public function testViewFile(): void
+    {
+        $fileId = 'file-abc123';
+        $dto = new FileViewDTO($fileId);
+
+        $response = $this->client->viewFile($dto);
+
+        /** @var array<string, mixed> */
+        $responseData = json_decode($response, true);
+        $this->assertTrue(isset($responseData['success']));
+        $this->assertTrue($responseData['success']);
+        $data = $responseData['data'];
+        $this->assertIsArray($data);
+        $this->assertTrue(isset($data['file']));
+        $file = $data['file'];
+        $this->assertIsArray($file);
+        $this->assertTrue(isset($file['id']));
+        $this->assertTrue(isset($file['filename']));
+        $this->assertTrue(isset($file['purpose']));
+        $this->assertTrue(isset($file['bytes']));
+    }
+
+    public function testDeleteFile(): void
+    {
+        $fileId = 'file-abc123';
+        $dto = new FileDeleteDTO($fileId);
+
+        $response = $this->client->deleteFile($dto);
+
+        /** @var array<string, mixed> */
+        $responseData = json_decode($response, true);
+        $this->assertTrue(isset($responseData['success']));
+        $this->assertTrue($responseData['success']);
+        $data = $responseData['data'];
+        $this->assertIsArray($data);
+        $this->assertTrue(isset($data['message']));
+        $this->assertEquals('File deleted successfully', $data['message']);
+    }
+
+    public function testCreateAssistant(): void
+    {
+        $contextId = 'cot_68e7aeb0a1f43';
+        $fileIds = ['file-KNpZsP3NBAajzDETBqZQpX'];
+        $dto = new AssistantCreateDTO($contextId, $fileIds);
+
+        $response = $this->client->createAssistant($dto);
+
+        /** @var array<string, mixed> */
+        $responseData = json_decode($response, true);
+        $this->assertTrue(isset($responseData['success']));
+        $this->assertTrue($responseData['success']);
+        $data = $responseData['data'];
+        $this->assertIsArray($data);
+        $this->assertTrue(isset($data['assistantId']));
+        $this->assertTrue(isset($data['externalAssistantId']));
+        /** @var string $assistantId */
+        $assistantId = $data['assistantId'];
+        $this->assertStringStartsWith('ast_', $assistantId);
+    }
+
+    public function testCreateAssistantWithEmptyFileIds(): void
+    {
+        $contextId = 'cot_68e7aeb0a1f43';
+        $dto = new AssistantCreateDTO($contextId);
+
+        $response = $this->client->createAssistant($dto);
+
+        /** @var array<string, mixed> */
+        $responseData = json_decode($response, true);
+        $this->assertTrue(isset($responseData['success']));
+        $this->assertTrue($responseData['success']);
+        $data = $responseData['data'];
+        $this->assertIsArray($data);
+        $this->assertTrue(isset($data['assistantId']));
+        $this->assertTrue(isset($data['externalAssistantId']));
+    }
+
+    public function testViewAssistant(): void
+    {
+        $assistantId = 'ast_abc123';
+        $dto = new AssistantViewDTO($assistantId);
+
+        $response = $this->client->viewAssistant($dto);
+
+        /** @var array<string, mixed> */
+        $responseData = json_decode($response, true);
+        $this->assertTrue(isset($responseData['success']));
+        $this->assertTrue($responseData['success']);
+        $data = $responseData['data'];
+        $this->assertIsArray($data);
+        $this->assertTrue(isset($data['assistantId']));
+        $this->assertTrue(isset($data['name']));
+        $this->assertTrue(isset($data['instructions']));
+        $this->assertTrue(isset($data['externalAssistantId']));
+        $this->assertTrue(isset($data['fileIds']));
+        $this->assertIsArray($data['fileIds']);
+    }
+
+    public function testUpdateAssistant(): void
+    {
+        $assistantId = 'ast_abc123';
+        $fileIds = ['fil-abc123', 'fil-def456'];
+        $dto = new AssistantUpdateDTO($assistantId, $fileIds);
+
+        $response = $this->client->updateAssistant($dto);
+
+        /** @var array<string, mixed> */
+        $responseData = json_decode($response, true);
+        $this->assertTrue(isset($responseData['success']));
+        $this->assertTrue($responseData['success']);
+        $data = $responseData['data'];
+        $this->assertIsArray($data);
+        $this->assertTrue(isset($data['assistantId']));
+        $this->assertTrue(isset($data['fileIds']));
+        $this->assertIsArray($data['fileIds']);
+    }
+
+    public function testDeleteAssistant(): void
+    {
+        $assistantId = 'ast_68f638a37c2474.79919725';
+        $dto = new AssistantDeleteDTO($assistantId);
+
+        $response = $this->client->deleteAssistant($dto);
+
+        /** @var array<string, mixed> */
+        $responseData = json_decode($response, true);
+        $this->assertTrue(isset($responseData['success']));
+        $this->assertTrue($responseData['success']);
+        $data = $responseData['data'];
+        $this->assertIsArray($data);
+        $this->assertTrue(isset($data['assistantId']));
+        $this->assertTrue(isset($data['externalAssistantId']));
+        $this->assertEquals('ast_68f638a37c2474.79919725', $data['assistantId']);
     }
 }

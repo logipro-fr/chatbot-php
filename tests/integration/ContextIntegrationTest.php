@@ -4,9 +4,9 @@ namespace Tests\Integration;
 
 use ChatbotPhp\DTO\Context\ContextCreateDTO;
 
-class CreateContextTest extends BaseIntegrationTestCase
+class ContextIntegrationTest extends BaseIntegrationTestCase
 {
-    public function testCreateContextIntegration(): void
+    public function testCreateContext(): void
     {
         $contextMessage = "Test d'intégration - Création de contexte";
         $dto = new ContextCreateDTO($contextMessage);

@@ -39,7 +39,7 @@ class ContextService
 
     public function update(ContextUpdateDTO $dto): string
     {
-        $response = $this->httpClient->request('PUT', $this->apiUrls->updateContext(), [
+        $response = $this->httpClient->request('PATCH', $this->apiUrls->updateContext(), [
             'json' => [
                 'Id' => $dto->id,
                 'NewMessage' => $dto->newMessage

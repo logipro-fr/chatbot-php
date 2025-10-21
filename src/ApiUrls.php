@@ -22,9 +22,9 @@ class ApiUrls
     public const DELETE_FILE = '/v1/file/delete';
 
     public const CREATE_ASSISTANT = '/v1/assistant/create-from-context';
-    public const UPDATE_ASSISTANT = '/v1/assistant/files';
-    public const VIEW_ASSISTANT = '/v1/assistant';
-    public const DELETE_ASSISTANT = '/v1/assistant/delete';
+    public const UPDATE_ASSISTANT = '/v1/assistant/%s/files';
+    public const VIEW_ASSISTANT = '/v1/assistant/%s';
+    public const DELETE_ASSISTANT = '/v1/assistant/%s/delete';
 
     public const CREATE_THREAD = '/v1/assistant/conversation';
     public const CONTINUE_THREAD = '/v1/assistant/conversation/continue';
@@ -50,7 +50,7 @@ class ApiUrls
 
     public function viewContext(string $contextId): string
     {
-        return $this->baseUrl . self::VIEW_CONTEXT . '?id=' . urlencode($contextId);
+        return $this->baseUrl . self::VIEW_CONTEXT . '?Id=' . urlencode($contextId);
     }
 
     public function updateContext(): string
@@ -75,11 +75,31 @@ class ApiUrls
 
     public function viewFile(string $fileId): string
     {
-        return $this->baseUrl . self::VIEW_FILE . '?id=' . urlencode($fileId);
+        return $this->baseUrl . self::VIEW_FILE . '?Id=' . urlencode($fileId);
     }
 
     public function deleteFile(): string
     {
         return $this->baseUrl . self::DELETE_FILE;
+    }
+
+    public function createAssistant(): string
+    {
+        return $this->baseUrl . self::CREATE_ASSISTANT;
+    }
+
+    public function viewAssistant(string $assistantId): string
+    {
+        return $this->baseUrl . sprintf(self::VIEW_ASSISTANT, $assistantId);
+    }
+
+    public function updateAssistant(string $assistantId): string
+    {
+        return $this->baseUrl . sprintf(self::UPDATE_ASSISTANT, $assistantId);
+    }
+
+    public function deleteAssistant(string $assistantId): string
+    {
+        return $this->baseUrl . sprintf(self::DELETE_ASSISTANT, $assistantId);
     }
 }

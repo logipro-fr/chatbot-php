@@ -32,7 +32,7 @@ class ApiUrlsTest extends TestCase
     public function testViewContext(): void
     {
         $contextId = 'cot_66b46fefe29d5';
-        $expectedUrl = ApiUrls::BASE_URL_PROD . ApiUrls::VIEW_CONTEXT . '?id=' . urlencode($contextId);
+        $expectedUrl = ApiUrls::BASE_URL_PROD . ApiUrls::VIEW_CONTEXT . '?Id=' . urlencode($contextId);
 
         $this->assertSame(
             $expectedUrl,
@@ -53,6 +53,47 @@ class ApiUrlsTest extends TestCase
         $this->assertSame(
             ApiUrls::BASE_URL_PROD . ApiUrls::DELETE_CONTEXT,
             (new ApiUrls())->deleteContext()
+        );
+    }
+
+    public function testCreateAssistant(): void
+    {
+        $this->assertSame(
+            ApiUrls::BASE_URL_PROD . ApiUrls::CREATE_ASSISTANT,
+            (new ApiUrls())->createAssistant()
+        );
+    }
+
+    public function testViewAssistant(): void
+    {
+        $assistantId = 'ast_abc123';
+        $expectedUrl = ApiUrls::BASE_URL_PROD . sprintf(ApiUrls::VIEW_ASSISTANT, $assistantId);
+
+        $this->assertSame(
+            $expectedUrl,
+            (new ApiUrls())->viewAssistant($assistantId)
+        );
+    }
+
+    public function testUpdateAssistant(): void
+    {
+        $assistantId = 'ast_abc123';
+        $expectedUrl = ApiUrls::BASE_URL_PROD . sprintf(ApiUrls::UPDATE_ASSISTANT, $assistantId);
+
+        $this->assertSame(
+            $expectedUrl,
+            (new ApiUrls())->updateAssistant($assistantId)
+        );
+    }
+
+    public function testDeleteAssistant(): void
+    {
+        $assistantId = 'ast_abc123';
+        $expectedUrl = ApiUrls::BASE_URL_PROD . sprintf(ApiUrls::DELETE_ASSISTANT, $assistantId);
+
+        $this->assertSame(
+            $expectedUrl,
+            (new ApiUrls())->deleteAssistant($assistantId)
         );
     }
 }

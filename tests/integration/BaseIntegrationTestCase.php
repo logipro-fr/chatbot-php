@@ -14,8 +14,9 @@ abstract class BaseIntegrationTestCase extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        
-        $this->baseUrl = $_ENV['CHATBOT_API_URL'] ?? 'http://172.17.0.1:11080/api';
+
+        $envUrl = $_ENV['CHATBOT_API_URL'] ?? null;
+        $this->baseUrl = is_string($envUrl) ? $envUrl : 'http://172.17.0.1:11080/api';
         $this->chatbotClient = new ChatbotClient(null, new ApiUrls($this->baseUrl));
     }
 
@@ -29,6 +30,9 @@ abstract class BaseIntegrationTestCase extends TestCase
         return $this->chatbotClient;
     }
 
+    /**
+     * @return array{success: bool, data: mixed}
+     */
     protected function assertStandardApiResponse(string $response): array
     {
         $this->assertJson($response);
@@ -38,14 +42,18 @@ abstract class BaseIntegrationTestCase extends TestCase
         $this->assertArrayHasKey('success', $responseData);
         $this->assertArrayHasKey('data', $responseData);
 
+        /** @var array{success: bool, data: mixed} $responseData */
         return $responseData;
     }
 
+    /**
+     * @return array{success: bool, data: mixed}
+     */
     protected function assertSuccessfulResponse(string $response): array
     {
         $responseData = $this->assertStandardApiResponse($response);
         $this->assertTrue($responseData['success']);
-        
+
         return $responseData;
     }
 }

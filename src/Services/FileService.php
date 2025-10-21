@@ -23,19 +23,30 @@ class FileService
 
     public function upload(FileUploadDTO $dto): string
     {
+        if (!file_exists($dto->filePath)) {
+            throw new \InvalidArgumentException("Le fichier n'existe pas : " . $dto->filePath);
+        }
+
+        $boundary = uniqid();
+        $filename = basename($dto->filePath);
+        $fileContent = file_get_contents($dto->filePath);
+
+        $body = "--{$boundary}\r\n";
+        $body .= "Content-Disposition: form-data; name=\"file\"; filename=\"{$filename}\"\r\n";
+        $body .= "Content-Type: application/octet-stream\r\n\r\n";
+        $body .= $fileContent . "\r\n";
+        $body .= "--{$boundary}\r\n";
+        $body .= "Content-Disposition: form-data; name=\"purpose\"\r\n\r\n";
+        $body .= $dto->purpose . "\r\n";
+        $body .= "--{$boundary}--\r\n";
+
         $response = $this->httpClient->request('POST', $this->apiUrls->uploadFile(), [
-            'multipart' => [
-                [
-                    'name' => 'file',
-                    'contents' => fopen($dto->filePath, 'r'),
-                    'filename' => basename($dto->filePath)
-                ],
-                [
-                    'name' => 'purpose',
-                    'contents' => $dto->purpose
-                ]
-            ]
+            'headers' => [
+                'Content-Type' => "multipart/form-data; boundary={$boundary}"
+            ],
+            'body' => $body
         ]);
+
         return $response->getContent();
     }
 

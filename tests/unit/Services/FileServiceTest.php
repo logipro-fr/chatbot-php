@@ -99,4 +99,19 @@ class FileServiceTest extends TestCase
 
         $this->assertEquals('{"success": true, "data": {"message": "the file was deleted"}}', $result);
     }
+
+    public function testUploadFileWithNonExistentFile(): void
+    {
+        $mockHttpClient = $this->createMock(HttpClientInterface::class);
+        /** @var MockObject&HttpClientInterface $mockHttpClient */
+        $service = new FileService($mockHttpClient, new ApiUrls());
+
+        $nonExistentPath = '/path/to/non-existent-file.pdf';
+        $dto = new FileUploadDTO($nonExistentPath, 'assistants');
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage("Le fichier n'existe pas : " . $nonExistentPath);
+
+        $service->upload($dto);
+    }
 }
