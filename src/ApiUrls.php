@@ -7,8 +7,8 @@ class ApiUrls
     public const BASE_URL_PROD = 'https://api.chatbot-php.com';
     public const PREFIX_API = '/api/external';
 
-    public const CREATE_CONVERSATION = '/v1/conversations/make';
-    public const CONTINUE_CONVERSATION = '/v1/conversations/continue';
+    public const CREATE_CONVERSATION = '/v1/conversations/Make';
+    public const CONTINUE_CONVERSATION = '/v1/conversations/Continue';
     public const VIEW_CONVERSATION = '/v1/conversations';
 
     public const CREATE_CONTEXT = '/v1/context/Make';
@@ -63,6 +63,21 @@ class ApiUrls
         return $this->baseUrl . self::DELETE_CONTEXT;
     }
 
+    public function makeConversation(): string
+    {
+        return $this->baseUrl . self::CREATE_CONVERSATION;
+    }
+
+    public function continueConversation(): string
+    {
+        return $this->baseUrl . self::CONTINUE_CONVERSATION;
+    }
+
+    public function viewConversation(string $conversationId): string
+    {
+        return $this->baseUrl . self::VIEW_CONVERSATION . '?Id=' . urlencode($conversationId);
+    }
+
     public function uploadFile(): string
     {
         return $this->baseUrl . self::UPLOAD_FILE;
@@ -101,5 +116,15 @@ class ApiUrls
     public function deleteAssistant(string $assistantId): string
     {
         return $this->baseUrl . sprintf(self::DELETE_ASSISTANT, $assistantId);
+    }
+
+    public function createThread(): string
+    {
+        return $this->baseUrl . self::CREATE_THREAD;
+    }
+
+    public function continueThread(): string
+    {
+        return $this->baseUrl . self::CONTINUE_THREAD;
     }
 }

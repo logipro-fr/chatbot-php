@@ -9,9 +9,14 @@ use ChatbotPhp\DTO\Assistant\AssistantViewDTO;
 use ChatbotPhp\DTO\Context\ContextCreateDTO;
 use ChatbotPhp\DTO\Context\ContextDeleteDTO;
 use ChatbotPhp\DTO\Context\ContextUpdateDTO;
+use ChatbotPhp\DTO\Conversation\ConversationMakeDTO;
+use ChatbotPhp\DTO\Conversation\ConversationContinueDTO;
+use ChatbotPhp\DTO\Conversation\ConversationViewDTO;
 use ChatbotPhp\DTO\File\FileDeleteDTO;
 use ChatbotPhp\DTO\File\FileUploadDTO;
 use ChatbotPhp\DTO\File\FileViewDTO;
+use ChatbotPhp\DTO\Thread\ThreadCreateDTO;
+use ChatbotPhp\DTO\Thread\ThreadContinueDTO;
 
 interface ChatbotClientInterface
 {
@@ -29,4 +34,11 @@ interface ChatbotClientInterface
     public function viewAssistant(AssistantViewDTO $dto): string;
     public function updateAssistant(AssistantUpdateDTO $dto): string;
     public function deleteAssistant(AssistantDeleteDTO $dto): string;
+
+    public function makeConversation(ConversationMakeDTO $dto): string;
+    public function continueConversation(ConversationContinueDTO $dto): string;
+    public function viewConversation(ConversationViewDTO $dto): string;
+
+    public function createThread(ThreadCreateDTO $dto): string;
+    public function continueThread(ThreadContinueDTO $dto): string;
 }

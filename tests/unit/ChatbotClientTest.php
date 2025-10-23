@@ -12,9 +12,14 @@ use ChatbotPhp\DTO\Assistant\AssistantViewDTO;
 use ChatbotPhp\DTO\Context\ContextCreateDTO;
 use ChatbotPhp\DTO\Context\ContextDeleteDTO;
 use ChatbotPhp\DTO\Context\ContextUpdateDTO;
+use ChatbotPhp\DTO\Conversation\ConversationMakeDTO;
+use ChatbotPhp\DTO\Conversation\ConversationContinueDTO;
+use ChatbotPhp\DTO\Conversation\ConversationViewDTO;
 use ChatbotPhp\DTO\File\FileUploadDTO;
 use ChatbotPhp\DTO\File\FileViewDTO;
 use ChatbotPhp\DTO\File\FileDeleteDTO;
+use ChatbotPhp\DTO\Thread\ThreadCreateDTO;
+use ChatbotPhp\DTO\Thread\ThreadContinueDTO;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -309,5 +314,126 @@ class ChatbotClientTest extends TestCase
         $this->assertTrue(isset($data['assistantId']));
         $this->assertTrue(isset($data['externalAssistantId']));
         $this->assertEquals('ast_68f638a37c2474.79919725', $data['assistantId']);
+    }
+
+    public function testMakeConversation(): void
+    {
+        $prompt = "Bonjour";
+        $lmName = "GPTModel";
+        $context = "cot_66b46fefe29d5";
+        $dto = new ConversationMakeDTO($prompt, $lmName, $context);
+
+        $response = $this->client->makeConversation($dto);
+
+        /** @var array<string, mixed> */
+        $responseData = json_decode($response, true);
+        $this->assertTrue(isset($responseData['success']));
+        $this->assertTrue($responseData['success']);
+        $data = $responseData['data'];
+        $this->assertIsArray($data);
+        $this->assertTrue(isset($data['conversationId']));
+        $this->assertTrue(isset($data['numberOfPairs']));
+        $this->assertTrue(isset($data['botMessage']));
+        /** @var string $conversationId */
+        $conversationId = $data['conversationId'];
+        $this->assertStringStartsWith('con_', $conversationId);
+        $this->assertEquals(1, $data['numberOfPairs']);
+        $this->assertIsString($data['botMessage']);
+    }
+
+    public function testContinueConversation(): void
+    {
+        $prompt = "Comment allez-vous?";
+        $convId = "con_66680a4a5ee25";
+        $lmName = "GPTModel";
+        $dto = new ConversationContinueDTO($prompt, $convId, $lmName);
+
+        $response = $this->client->continueConversation($dto);
+
+        /** @var array<string, mixed> */
+        $responseData = json_decode($response, true);
+        $this->assertTrue(isset($responseData['success']));
+        $this->assertTrue($responseData['success']);
+        $data = $responseData['data'];
+        $this->assertIsArray($data);
+        $this->assertTrue(isset($data['conversationId']));
+        $this->assertTrue(isset($data['numberOfPairs']));
+        $this->assertTrue(isset($data['botMessage']));
+        /** @var string $conversationId */
+        $conversationId = $data['conversationId'];
+        $this->assertStringStartsWith('con_', $conversationId);
+        $this->assertIsInt($data['numberOfPairs']);
+        $this->assertIsString($data['botMessage']);
+        if (isset($responseData['description'])) {
+            $this->assertIsString($responseData['description']);
+        }
+    }
+
+    public function testViewConversation(): void
+    {
+        $conversationId = "con_66cd76e11574";
+        $dto = new ConversationViewDTO($conversationId);
+
+        $response = $this->client->viewConversation($dto);
+
+        /** @var array<string, mixed> */
+        $responseData = json_decode($response, true);
+        $this->assertTrue(isset($responseData['success']));
+        $this->assertTrue($responseData['success']);
+        $data = $responseData['data'];
+        $this->assertIsArray($data);
+        $this->assertTrue(isset($data['contextId']));
+        $this->assertTrue(isset($data['pairs']));
+        /** @var string $contextId */
+        $contextId = $data['contextId'];
+        $this->assertStringStartsWith('cot_', $contextId);
+        $this->assertIsArray($data['pairs']);
+    }
+
+    public function testCreateThread(): void
+    {
+        $astId = "ast_abc123";
+        $message = "Peux-tu m'aider à documenter cette fonction PHP ?";
+        $dto = new ThreadCreateDTO($astId, $message);
+
+        $response = $this->client->createThread($dto);
+
+        /** @var array<string, mixed> */
+        $responseData = json_decode($response, true);
+        $this->assertTrue(isset($responseData['success']));
+        $this->assertTrue($responseData['success']);
+        $data = $responseData['data'];
+        $this->assertIsArray($data);
+        $this->assertTrue(isset($data['conversationId']));
+        $this->assertTrue(isset($data['assistantMessage']));
+        /** @var string $conversationId */
+        $conversationId = $data['conversationId'];
+        $this->assertStringStartsWith('con_', $conversationId);
+        $this->assertIsString($data['assistantMessage']);
+    }
+
+    public function testContinueThread(): void
+    {
+        $conversationId = "con_66680a4a5ee25";
+        $message = "Peux-tu m'expliquer plus en détail ?";
+        $dto = new ThreadContinueDTO($conversationId, $message);
+
+        $response = $this->client->continueThread($dto);
+
+        /** @var array<string, mixed> */
+        $responseData = json_decode($response, true);
+        $this->assertTrue(isset($responseData['success']));
+        $this->assertTrue($responseData['success']);
+        $data = $responseData['data'];
+        $this->assertIsArray($data);
+        $this->assertTrue(isset($data['conversationId']));
+        $this->assertTrue(isset($data['message']));
+        /** @var string $convId */
+        $convId = $data['conversationId'];
+        $this->assertStringStartsWith('con_', $convId);
+        $this->assertIsString($data['message']);
+        if (isset($responseData['description'])) {
+            $this->assertIsString($responseData['description']);
+        }
     }
 }

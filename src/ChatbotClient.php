@@ -9,12 +9,19 @@ use ChatbotPhp\DTO\Assistant\AssistantViewDTO;
 use ChatbotPhp\DTO\Context\ContextCreateDTO;
 use ChatbotPhp\DTO\Context\ContextDeleteDTO;
 use ChatbotPhp\DTO\Context\ContextUpdateDTO;
+use ChatbotPhp\DTO\Conversation\ConversationMakeDTO;
+use ChatbotPhp\DTO\Conversation\ConversationContinueDTO;
+use ChatbotPhp\DTO\Conversation\ConversationViewDTO;
 use ChatbotPhp\DTO\File\FileUploadDTO;
 use ChatbotPhp\DTO\File\FileViewDTO;
 use ChatbotPhp\DTO\File\FileDeleteDTO;
+use ChatbotPhp\DTO\Thread\ThreadCreateDTO;
+use ChatbotPhp\DTO\Thread\ThreadContinueDTO;
 use ChatbotPhp\Services\AssistantService;
 use ChatbotPhp\Services\ContextService;
+use ChatbotPhp\Services\ConversationService;
 use ChatbotPhp\Services\FileService;
+use ChatbotPhp\Services\ThreadService;
 use Symfony\Component\HttpClient\CurlHttpClient;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
@@ -22,7 +29,9 @@ class ChatbotClient implements ChatbotClientInterface
 {
     private AssistantService $assistantService;
     private ContextService $contextService;
+    private ConversationService $conversationService;
     private FileService $fileService;
+    private ThreadService $threadService;
     private HttpClientInterface $httpClient;
     private ApiUrls $apiUrls;
 
@@ -34,7 +43,9 @@ class ChatbotClient implements ChatbotClientInterface
         $this->apiUrls = $apiUrls ?? new ApiUrls();
         $this->assistantService = new AssistantService($this->httpClient, $this->apiUrls);
         $this->contextService = new ContextService($this->httpClient, $this->apiUrls);
+        $this->conversationService = new ConversationService($this->httpClient, $this->apiUrls);
         $this->fileService = new FileService($this->httpClient, $this->apiUrls);
+        $this->threadService = new ThreadService($this->httpClient, $this->apiUrls);
     }
 
     public function createContext(ContextCreateDTO $dto): string
@@ -95,5 +106,30 @@ class ChatbotClient implements ChatbotClientInterface
     public function deleteAssistant(AssistantDeleteDTO $dto): string
     {
         return $this->assistantService->delete($dto);
+    }
+
+    public function makeConversation(ConversationMakeDTO $dto): string
+    {
+        return $this->conversationService->make($dto);
+    }
+
+    public function continueConversation(ConversationContinueDTO $dto): string
+    {
+        return $this->conversationService->continue($dto);
+    }
+
+    public function viewConversation(ConversationViewDTO $dto): string
+    {
+        return $this->conversationService->view($dto);
+    }
+
+    public function createThread(ThreadCreateDTO $dto): string
+    {
+        return $this->threadService->create($dto);
+    }
+
+    public function continueThread(ThreadContinueDTO $dto): string
+    {
+        return $this->threadService->continue($dto);
     }
 }

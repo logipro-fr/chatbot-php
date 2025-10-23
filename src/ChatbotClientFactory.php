@@ -65,6 +65,21 @@ class ChatbotClientFactory
         if ($method == 'DELETE' && str_contains($url, '/v1/assistant/') && str_ends_with($url, '/delete')) {
             return $this->deleteV1AssistantMockResponse();
         }
+        if ($method == 'POST' && str_ends_with($url, '/v1/conversations/Make')) {
+            return $this->postV1ConversationsMakeMockResponse();
+        }
+        if ($method == 'POST' && str_ends_with($url, '/v1/conversations/Continue')) {
+            return $this->postV1ConversationsContinueMockResponse();
+        }
+        if ($method == 'GET' && str_contains($url, '/v1/conversations?Id=')) {
+            return $this->getV1ConversationsViewMockResponse();
+        }
+        if ($method == 'POST' && str_ends_with($url, '/v1/assistant/conversation')) {
+            return $this->postV1AssistantConversationMockResponse();
+        }
+        if ($method == 'POST' && str_ends_with($url, '/v1/assistant/conversation/continue')) {
+            return $this->postV1AssistantConversationContinueMockResponse();
+        }
         throw new BadRequestException();
     }
 
@@ -144,6 +159,36 @@ class ChatbotClientFactory
     private function deleteV1AssistantMockResponse(): MockResponse
     {
         $response = $this->readResponseJson('/Assistant/delete.json');
+        return new MockResponse($response);
+    }
+
+    private function postV1ConversationsMakeMockResponse(): MockResponse
+    {
+        $response = $this->readResponseJson('/Conversation/makeConversation.json');
+        return new MockResponse($response);
+    }
+
+    private function postV1ConversationsContinueMockResponse(): MockResponse
+    {
+        $response = $this->readResponseJson('/Conversation/continueConversation.json');
+        return new MockResponse($response);
+    }
+
+    private function getV1ConversationsViewMockResponse(): MockResponse
+    {
+        $response = $this->readResponseJson('/Conversation/viewConversation.json');
+        return new MockResponse($response);
+    }
+
+    private function postV1AssistantConversationMockResponse(): MockResponse
+    {
+        $response = $this->readResponseJson('/Thread/createThread.json');
+        return new MockResponse($response);
+    }
+
+    private function postV1AssistantConversationContinueMockResponse(): MockResponse
+    {
+        $response = $this->readResponseJson('/Thread/continueThread.json');
         return new MockResponse($response);
     }
 }
