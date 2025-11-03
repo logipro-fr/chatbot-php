@@ -17,6 +17,11 @@ use ChatbotPhp\DTO\File\FileUploadDTO;
 use ChatbotPhp\DTO\File\FileViewDTO;
 use ChatbotPhp\DTO\Thread\ThreadCreateDTO;
 use ChatbotPhp\DTO\Thread\ThreadContinueDTO;
+use ChatbotPhp\Resources\Assistants;
+use ChatbotPhp\Resources\Contexts;
+use ChatbotPhp\Resources\Conversations;
+use ChatbotPhp\Resources\Files;
+use ChatbotPhp\Resources\Threads;
 
 interface ChatbotClientInterface
 {
@@ -41,4 +46,10 @@ interface ChatbotClientInterface
 
     public function createThread(ThreadCreateDTO $dto): string;
     public function continueThread(ThreadContinueDTO $dto): string;
+
+    public function assistants(): Assistants;
+    public function files(): Files;
+    public function conversations(): Conversations;
+    public function contexts(): Contexts;
+    public function threads(): Threads;
 }

@@ -20,6 +20,11 @@ use ChatbotPhp\DTO\File\FileViewDTO;
 use ChatbotPhp\DTO\File\FileDeleteDTO;
 use ChatbotPhp\DTO\Thread\ThreadCreateDTO;
 use ChatbotPhp\DTO\Thread\ThreadContinueDTO;
+use ChatbotPhp\Resources\Assistants;
+use ChatbotPhp\Resources\Contexts;
+use ChatbotPhp\Resources\Conversations;
+use ChatbotPhp\Resources\Files;
+use ChatbotPhp\Resources\Threads;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -435,5 +440,40 @@ class ChatbotClientTest extends TestCase
         if (isset($responseData['description'])) {
             $this->assertIsString($responseData['description']);
         }
+    }
+
+    public function testAssistantsReturnsAssistantsInstance(): void
+    {
+        $assistants = $this->client->assistants();
+
+        $this->assertInstanceOf(Assistants::class, $assistants);
+    }
+
+    public function testFilesReturnsFilesInstance(): void
+    {
+        $files = $this->client->files();
+
+        $this->assertInstanceOf(Files::class, $files);
+    }
+
+    public function testConversationsReturnsConversationsInstance(): void
+    {
+        $conversations = $this->client->conversations();
+
+        $this->assertInstanceOf(Conversations::class, $conversations);
+    }
+
+    public function testContextsReturnsContextsInstance(): void
+    {
+        $contexts = $this->client->contexts();
+
+        $this->assertInstanceOf(Contexts::class, $contexts);
+    }
+
+    public function testThreadsReturnsThreadsInstance(): void
+    {
+        $threads = $this->client->threads();
+
+        $this->assertInstanceOf(Threads::class, $threads);
     }
 }

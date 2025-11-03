@@ -17,6 +17,11 @@ use ChatbotPhp\DTO\File\FileViewDTO;
 use ChatbotPhp\DTO\File\FileDeleteDTO;
 use ChatbotPhp\DTO\Thread\ThreadCreateDTO;
 use ChatbotPhp\DTO\Thread\ThreadContinueDTO;
+use ChatbotPhp\Resources\Assistants;
+use ChatbotPhp\Resources\Contexts;
+use ChatbotPhp\Resources\Conversations;
+use ChatbotPhp\Resources\Files;
+use ChatbotPhp\Resources\Threads;
 use ChatbotPhp\Services\AssistantService;
 use ChatbotPhp\Services\ContextService;
 use ChatbotPhp\Services\ConversationService;
@@ -131,5 +136,30 @@ class ChatbotClient implements ChatbotClientInterface
     public function continueThread(ThreadContinueDTO $dto): string
     {
         return $this->threadService->continue($dto);
+    }
+
+    public function assistants(): Assistants
+    {
+        return new Assistants($this->assistantService);
+    }
+
+    public function files(): Files
+    {
+        return new Files($this->fileService);
+    }
+
+    public function conversations(): Conversations
+    {
+        return new Conversations($this->conversationService);
+    }
+
+    public function contexts(): Contexts
+    {
+        return new Contexts($this->contextService);
+    }
+
+    public function threads(): Threads
+    {
+        return new Threads($this->threadService);
     }
 }
