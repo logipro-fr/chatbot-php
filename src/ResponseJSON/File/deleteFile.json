@@ -1,0 +1,7 @@
+{
+    "success": true,
+    "data": {
+        "message": "File deleted successfully",
+        "file_id": "fil-abc123"
+    }
+}

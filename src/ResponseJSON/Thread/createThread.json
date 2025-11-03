@@ -1,0 +1,8 @@
+{
+    "success": true,
+    "data": {
+        "conversationId": "con_abc123",
+        "assistantMessage": "Bien sûr ! Je peux vous aider à documenter votre fonction PHP. Pouvez-vous me montrer le code ?"
+    }
+}
+

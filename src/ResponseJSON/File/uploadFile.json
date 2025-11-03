@@ -1,0 +1,9 @@
+{
+    "success": true,
+    "data": {
+        "file_id": "fil-abc123",
+        "filename": "document.pdf",
+        "purpose": "assistants",
+        "size": 1024
+    }
+}

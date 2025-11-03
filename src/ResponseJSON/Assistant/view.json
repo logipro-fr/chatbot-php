@@ -1,0 +1,30 @@
+{
+  "success": true,
+  "data": {
+    "assistantId": "ast_abc123",
+    "name": "Mon Assistant IA",
+    "instructions": "Tu es un assistant IA spécialisé dans l'aide aux développeurs.",
+    "externalAssistantId": "asst_xyz789",
+    "fileIds": [
+      "fil-abc123",
+      "fil-def456"
+    ],
+    "createdAt": "2024-01-15 10:30:00",
+    "externalData": {
+      "id": "asst_xyz789",
+      "tools": [
+        {
+          "type": "file_search"
+        }
+      ],
+      "tool_resources": {
+        "file_search": {
+          "vector_store_ids": [
+            "vs_1234567890abcdef"
+          ]
+        }
+      }
+    }
+  }
+}
+
