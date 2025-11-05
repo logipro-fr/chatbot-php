@@ -15,10 +15,10 @@
         }
     ],
     "require": {
-        "php": "7.4.*",
-        "symfony/http-client": "^5.4",
-        "symfony/http-foundation": "^5.4",
-        "symfony/mime": "^5.4"
+        "php": "^7.4 || >=8.0",
+        "symfony/http-client": ">=7.0",
+        "symfony/http-foundation": ">=7.0",
+        "symfony/mime": ">=7.0"
     },
     "require-dev": {
         "infection/extension-installer": "0.1.2",

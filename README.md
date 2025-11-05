@@ -5,6 +5,12 @@ Client PHP for Chatbot API
 ## Install
 
 ```bash
+composer require logipro-fr/chatbot-php
+```
+
+Ou pour installer depuis le dépôt :
+
+```bash
 git clone https://github.com/logipro-fr/chatbot-php
 cd chatbot-php
 ./install --profile devlocal

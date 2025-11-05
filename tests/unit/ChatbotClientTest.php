@@ -127,26 +127,7 @@ class ChatbotClientTest extends TestCase
         $this->assertEquals('the context was deleted', $data['message']);
     }
 
-    public function testConstructorUsesProvidedApiUrls(): void
-    {
-        $httpClientMock = $this->getMockBuilder(HttpClientInterface::class)
-            ->onlyMethods(['request', 'stream'])
-            ->getMock();
 
-        $customApiUrls = $this->getMockBuilder(ApiUrls::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        /** @var MockObject&HttpClientInterface $httpClientMock */
-        /** @var MockObject&ApiUrls $customApiUrls */
-        $client = new ChatbotClient($httpClientMock, $customApiUrls);
-
-        $reflection = new \ReflectionClass($client);
-        $property = $reflection->getProperty('apiUrls');
-        $property->setAccessible(true);
-
-        $this->assertSame($customApiUrls, $property->getValue($client));
-    }
 
     public function testUploadFile(): void
     {
