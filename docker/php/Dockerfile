@@ -1,4 +1,4 @@
-FROM php:7.4-fpm
+FROM php:8.2-fpm
 
 # Installer les dépendances système nécessaires pour Composer
 RUN apt-get update && apt-get install -y \
