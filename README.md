@@ -131,6 +131,7 @@ $client->assistants()->delete($assistantId);
 $client->conversations()->create(['prompt' => '...', 'lm_name' => '...', 'context' => '...']);
 $client->conversations()->continue(['prompt' => '...', 'conv_id' => '...', 'lm_name' => '...']);
 $client->conversations()->retrieve($conversationId);
+$client->conversations()->list($assistantId);
 ```
 
 #### Threads - Gestion des threads (conversations avec assistant)

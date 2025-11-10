@@ -75,4 +75,23 @@ class ConversationServiceTest extends TestCase
 
         $this->assertEquals($expectedResponse, $result);
     }
+
+    public function testListConversationsWithSuccess(): void
+    {
+        $mockResponse = $this->createMock(ResponseInterface::class);
+        $expectedResponse = '{"success": true, "data": {"conversations": [{"conversationId": "con_123", "title": "Conversation du 10/11/2025 13:40"}]}}';
+        $mockResponse
+            ->method('getContent')
+            ->willReturn($expectedResponse);
+
+        $mockHttpClient = $this->createMock(HttpClientInterface::class);
+        $mockHttpClient->method('request')->willReturn($mockResponse);
+
+        /** @var MockObject&HttpClientInterface $mockHttpClient */
+        $service = new ConversationService($mockHttpClient, new ApiUrls());
+
+        $result = $service->list('ast_123456');
+
+        $this->assertEquals($expectedResponse, $result);
+    }
 }
