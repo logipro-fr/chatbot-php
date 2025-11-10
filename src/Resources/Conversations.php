@@ -54,4 +54,9 @@ class Conversations
 
         return $this->conversationService->view($dto);
     }
+
+    public function list(string $assistantId): string
+    {
+        return $this->conversationService->list($assistantId);
+    }
 }

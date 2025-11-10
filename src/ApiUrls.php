@@ -10,6 +10,7 @@ class ApiUrls
     public const CREATE_CONVERSATION = '/v1/conversations/Make';
     public const CONTINUE_CONVERSATION = '/v1/conversations/Continue';
     public const VIEW_CONVERSATION = '/v1/conversations';
+    public const LIST_CONVERSATIONS = '/v1/conversations/list';
 
     public const CREATE_CONTEXT = '/v1/context/Make';
     public const VIEW_CONTEXT = '/v1/contexts';
@@ -76,6 +77,11 @@ class ApiUrls
     public function viewConversation(string $conversationId): string
     {
         return $this->baseUrl . self::VIEW_CONVERSATION . '?Id=' . urlencode($conversationId);
+    }
+
+    public function listConversations(string $assistantId): string
+    {
+        return $this->baseUrl . self::LIST_CONVERSATIONS . '?assistantId=' . urlencode($assistantId);
     }
 
     public function uploadFile(): string

@@ -50,4 +50,10 @@ class ConversationService
         $response = $this->httpClient->request('GET', $this->apiUrls->viewConversation($dto->id));
         return $response->getContent();
     }
+
+    public function list(string $assistantId): string
+    {
+        $response = $this->httpClient->request('GET', $this->apiUrls->listConversations($assistantId));
+        return $response->getContent();
+    }
 }

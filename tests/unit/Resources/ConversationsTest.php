@@ -87,4 +87,20 @@ class ConversationsTest extends TestCase
 
         $this->assertEquals($expectedResponse, $result);
     }
+
+    public function testList(): void
+    {
+        $assistantId = 'ast_123';
+        $expectedResponse = '{"success":true,"data":{"conversations":[{"conversationId":"con_123","title":"Conversation du 10/11/2025 13:40"}]}}';
+
+        $this->conversationService
+            ->expects($this->once())
+            ->method('list')
+            ->with($assistantId)
+            ->willReturn($expectedResponse);
+
+        $result = $this->conversations->list($assistantId);
+
+        $this->assertEquals($expectedResponse, $result);
+    }
 }

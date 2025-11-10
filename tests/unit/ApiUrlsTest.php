@@ -96,4 +96,15 @@ class ApiUrlsTest extends TestCase
             (new ApiUrls())->deleteAssistant($assistantId)
         );
     }
+
+    public function testListConversations(): void
+    {
+        $assistantId = 'ast_abc123';
+        $expectedUrl = ApiUrls::BASE_URL_PROD . ApiUrls::LIST_CONVERSATIONS . '?assistantId=' . urlencode($assistantId);
+
+        $this->assertSame(
+            $expectedUrl,
+            (new ApiUrls())->listConversations($assistantId)
+        );
+    }
 }
