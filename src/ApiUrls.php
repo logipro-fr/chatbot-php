@@ -4,7 +4,7 @@ namespace ChatbotPhp;
 
 class ApiUrls
 {
-    public const BASE_URL_PROD = 'https://api.chatbot-php.com';
+    public const BASE_URL_PROD = 'https://dev.chatbot.logipro.fr';
     public const PREFIX_API = '/api/external';
 
     public const CREATE_CONVERSATION = '/v1/conversations/Make';
