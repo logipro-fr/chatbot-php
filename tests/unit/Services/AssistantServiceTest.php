@@ -97,7 +97,7 @@ class AssistantServiceTest extends TestCase
         $service = new AssistantService($mockHttpClient, new ApiUrls());
         $dto = new AssistantAttachFileDTO('ast_abc123', ['fil-abc123', 'fil-def456']);
 
-        $result = $service->update($dto);
+        $result = $service->attachFiles($dto);
 
         $this->assertEquals('{"success": true, "data": {"assistantId": "ast_abc123", ' .
             '"fileIds": ["fil-abc123", "fil-def456"]}}', $result);
@@ -117,7 +117,7 @@ class AssistantServiceTest extends TestCase
         $service = new AssistantService($mockHttpClient, new ApiUrls());
         $dto = new AssistantAttachFileDTO('ast_abc123', []);
 
-        $result = $service->update($dto);
+        $result = $service->attachFiles($dto);
 
         $this->assertEquals('{"success": true, "data": {"assistantId": "ast_abc123", "fileIds": []}}', $result);
     }

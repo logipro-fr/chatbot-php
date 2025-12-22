@@ -61,7 +61,7 @@ class Assistants
         }
         $dto = new AssistantAttachFileDTO($assistantId, $fileIds);
 
-        return $this->assistantService->update($dto);
+        return $this->assistantService->attachFiles($dto);
     }
 
     public function delete(string $assistantId): string

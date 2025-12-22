@@ -79,7 +79,8 @@ class ConversationServiceTest extends TestCase
     public function testListConversationsWithSuccess(): void
     {
         $mockResponse = $this->createMock(ResponseInterface::class);
-        $expectedResponse = '{"success": true, "data": {"conversations": [{"conversationId": "con_123", "title": "Conversation du 10/11/2025 13:40"}]}}';
+        $expectedResponse = '{"success": true, "data":
+        {"conversations": [{"conversationId": "con_123", "title": "Conversation du 10/11/2025 13:40"}]}}';
         $mockResponse
             ->method('getContent')
             ->willReturn($expectedResponse);

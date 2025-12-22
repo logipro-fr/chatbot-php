@@ -91,7 +91,8 @@ class ConversationsTest extends TestCase
     public function testList(): void
     {
         $assistantId = 'ast_123';
-        $expectedResponse = '{"success":true,"data":{"conversations":[{"conversationId":"con_123","title":"Conversation du 10/11/2025 13:40"}]}}';
+        $expectedResponse = '{"success":true,"data":
+        {"conversations":[{"conversationId":"con_123","title":"Conversation du 10/11/2025 13:40"}]}}';
 
         $this->conversationService
             ->expects($this->once())

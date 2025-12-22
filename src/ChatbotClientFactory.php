@@ -152,7 +152,7 @@ class ChatbotClientFactory
 
     private function putV1AssistantAttachFileMockResponse(): MockResponse
     {
-        $response = $this->readResponseJson('/Assistant/update.json');
+        $response = $this->readResponseJson('/Assistant/attachFile.json');
         return new MockResponse($response);
     }
 

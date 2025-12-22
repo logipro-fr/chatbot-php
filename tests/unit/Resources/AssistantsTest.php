@@ -91,7 +91,7 @@ class AssistantsTest extends TestCase
 
         $this->assistantService
             ->expects($this->once())
-            ->method('update')
+            ->method('attachFiles')
             ->with($this->callback(function (AssistantAttachFileDTO $dto) use ($assistantId, $fileIds) {
                 return $dto->assistantId === $assistantId && $dto->fileIds === $fileIds;
             }))
