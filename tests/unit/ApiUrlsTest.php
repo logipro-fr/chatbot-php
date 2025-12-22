@@ -75,14 +75,14 @@ class ApiUrlsTest extends TestCase
         );
     }
 
-    public function testUpdateAssistant(): void
+    public function testUpdateAssistantFiles(): void
     {
         $assistantId = 'ast_abc123';
         $expectedUrl = ApiUrls::BASE_URL_PROD . sprintf(ApiUrls::UPDATE_ASSISTANT, $assistantId);
 
         $this->assertSame(
             $expectedUrl,
-            (new ApiUrls())->updateAssistant($assistantId)
+            (new ApiUrls())->attachAssistantFiles($assistantId)
         );
     }
 

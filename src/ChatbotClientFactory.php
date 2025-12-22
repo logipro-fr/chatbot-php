@@ -60,7 +60,7 @@ class ChatbotClientFactory
             return $this->getV1AssistantViewMockResponse();
         }
         if ($method == 'PUT' && str_contains($url, '/v1/assistant/') && str_ends_with($url, '/files')) {
-            return $this->putV1AssistantUpdateMockResponse();
+            return $this->putV1AssistantAttachFileMockResponse();
         }
         if ($method == 'DELETE' && str_contains($url, '/v1/assistant/') && str_ends_with($url, '/delete')) {
             return $this->deleteV1AssistantMockResponse();
@@ -150,7 +150,7 @@ class ChatbotClientFactory
         return new MockResponse($response);
     }
 
-    private function putV1AssistantUpdateMockResponse(): MockResponse
+    private function putV1AssistantAttachFileMockResponse(): MockResponse
     {
         $response = $this->readResponseJson('/Assistant/update.json');
         return new MockResponse($response);

@@ -5,7 +5,7 @@ namespace ChatbotPhp\Services;
 use ChatbotPhp\ApiUrls;
 use ChatbotPhp\DTO\Assistant\AssistantCreateDTO;
 use ChatbotPhp\DTO\Assistant\AssistantDeleteDTO;
-use ChatbotPhp\DTO\Assistant\AssistantUpdateDTO;
+use ChatbotPhp\DTO\Assistant\AssistantAttachFileDTO;
 use ChatbotPhp\DTO\Assistant\AssistantViewDTO;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
@@ -39,9 +39,9 @@ class AssistantService
         return $response->getContent();
     }
 
-    public function update(AssistantUpdateDTO $dto): string
+    public function attachFiles(AssistantAttachFileDTO $dto): string
     {
-        $response = $this->httpClient->request('PUT', $this->apiUrls->updateAssistant($dto->assistantId), [
+        $response = $this->httpClient->request('PUT', $this->apiUrls->attachAssistantFiles($dto->assistantId), [
             'json' => [
                 'file_ids' => $dto->fileIds
             ]

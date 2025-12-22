@@ -114,7 +114,7 @@ class ApiUrls
         return $this->baseUrl . sprintf(self::VIEW_ASSISTANT, $assistantId);
     }
 
-    public function updateAssistant(string $assistantId): string
+    public function attachAssistantFiles(string $assistantId): string
     {
         return $this->baseUrl . sprintf(self::UPDATE_ASSISTANT, $assistantId);
     }

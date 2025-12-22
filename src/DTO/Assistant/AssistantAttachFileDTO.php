@@ -2,7 +2,7 @@
 
 namespace ChatbotPhp\DTO\Assistant;
 
-class AssistantUpdateDTO
+class AssistantAttachFileDTO
 {
     public string $assistantId;
     /** @var array<string> */

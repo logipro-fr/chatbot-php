@@ -7,7 +7,7 @@ use ChatbotPhp\ChatbotClient;
 use ChatbotPhp\ChatbotClientFactory;
 use ChatbotPhp\DTO\Assistant\AssistantCreateDTO;
 use ChatbotPhp\DTO\Assistant\AssistantDeleteDTO;
-use ChatbotPhp\DTO\Assistant\AssistantUpdateDTO;
+use ChatbotPhp\DTO\Assistant\AssistantAttachFileDTO;
 use ChatbotPhp\DTO\Assistant\AssistantViewDTO;
 use ChatbotPhp\DTO\Context\ContextCreateDTO;
 use ChatbotPhp\DTO\Context\ContextDeleteDTO;
@@ -265,13 +265,13 @@ class ChatbotClientTest extends TestCase
         $this->assertIsArray($data['fileIds']);
     }
 
-    public function testUpdateAssistant(): void
+    public function testAttachAssistantFiles(): void
     {
         $assistantId = 'ast_abc123';
         $fileIds = ['fil-abc123', 'fil-def456'];
-        $dto = new AssistantUpdateDTO($assistantId, $fileIds);
+        $dto = new AssistantAttachFileDTO($assistantId, $fileIds);
 
-        $response = $this->client->updateAssistant($dto);
+        $response = $this->client->attachAssistantFiles($dto);
 
         /** @var array<string, mixed> */
         $responseData = json_decode($response, true);

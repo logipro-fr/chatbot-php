@@ -5,7 +5,7 @@ namespace ChatbotPhp\Tests\Services;
 use ChatbotPhp\ApiUrls;
 use ChatbotPhp\DTO\Assistant\AssistantCreateDTO;
 use ChatbotPhp\DTO\Assistant\AssistantDeleteDTO;
-use ChatbotPhp\DTO\Assistant\AssistantUpdateDTO;
+use ChatbotPhp\DTO\Assistant\AssistantAttachFileDTO;
 use ChatbotPhp\DTO\Assistant\AssistantViewDTO;
 use ChatbotPhp\Services\AssistantService;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -95,7 +95,7 @@ class AssistantServiceTest extends TestCase
 
         /** @var MockObject&HttpClientInterface $mockHttpClient */
         $service = new AssistantService($mockHttpClient, new ApiUrls());
-        $dto = new AssistantUpdateDTO('ast_abc123', ['fil-abc123', 'fil-def456']);
+        $dto = new AssistantAttachFileDTO('ast_abc123', ['fil-abc123', 'fil-def456']);
 
         $result = $service->update($dto);
 
@@ -115,7 +115,7 @@ class AssistantServiceTest extends TestCase
 
         /** @var MockObject&HttpClientInterface $mockHttpClient */
         $service = new AssistantService($mockHttpClient, new ApiUrls());
-        $dto = new AssistantUpdateDTO('ast_abc123', []);
+        $dto = new AssistantAttachFileDTO('ast_abc123', []);
 
         $result = $service->update($dto);
 

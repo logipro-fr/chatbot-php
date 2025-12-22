@@ -4,7 +4,7 @@ namespace ChatbotPhp\Tests\Resources;
 
 use ChatbotPhp\DTO\Assistant\AssistantCreateDTO;
 use ChatbotPhp\DTO\Assistant\AssistantDeleteDTO;
-use ChatbotPhp\DTO\Assistant\AssistantUpdateDTO;
+use ChatbotPhp\DTO\Assistant\AssistantAttachFileDTO;
 use ChatbotPhp\DTO\Assistant\AssistantViewDTO;
 use ChatbotPhp\Resources\Assistants;
 use ChatbotPhp\Services\AssistantService;
@@ -83,7 +83,7 @@ class AssistantsTest extends TestCase
         $this->assertEquals($expectedResponse, $result);
     }
 
-    public function testUpdate(): void
+    public function testAttachFiles(): void
     {
         $assistantId = 'ast_123';
         $fileIds = ['file-abc', 'file-def'];
@@ -92,12 +92,12 @@ class AssistantsTest extends TestCase
         $this->assistantService
             ->expects($this->once())
             ->method('update')
-            ->with($this->callback(function (AssistantUpdateDTO $dto) use ($assistantId, $fileIds) {
+            ->with($this->callback(function (AssistantAttachFileDTO $dto) use ($assistantId, $fileIds) {
                 return $dto->assistantId === $assistantId && $dto->fileIds === $fileIds;
             }))
             ->willReturn($expectedResponse);
 
-        $result = $this->assistants->update([
+        $result = $this->assistants->attachFiles([
             'assistant_id' => $assistantId,
             'file_ids' => $fileIds
         ]);
