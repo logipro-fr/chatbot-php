@@ -5,6 +5,7 @@ namespace ChatbotPhp;
 use ChatbotPhp\DTO\Assistant\AssistantCreateDTO;
 use ChatbotPhp\DTO\Assistant\AssistantDeleteDTO;
 use ChatbotPhp\DTO\Assistant\AssistantAttachFileDTO;
+use ChatbotPhp\DTO\Assistant\AssistantDetachFileDTO;
 use ChatbotPhp\DTO\Assistant\AssistantViewDTO;
 use ChatbotPhp\DTO\Context\ContextCreateDTO;
 use ChatbotPhp\DTO\Context\ContextDeleteDTO;
@@ -106,6 +107,11 @@ class ChatbotClient implements ChatbotClientInterface
     public function attachAssistantFiles(AssistantAttachFileDTO $dto): string
     {
         return $this->assistantService->attachFiles($dto);
+    }
+
+    public function detachAssistantFiles(AssistantDetachFileDTO $dto): string
+    {
+        return $this->assistantService->detachFile($dto);
     }
 
     public function deleteAssistant(AssistantDeleteDTO $dto): string

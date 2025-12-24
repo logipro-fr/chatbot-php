@@ -6,6 +6,7 @@ use ChatbotPhp\ApiUrls;
 use ChatbotPhp\DTO\Assistant\AssistantCreateDTO;
 use ChatbotPhp\DTO\Assistant\AssistantDeleteDTO;
 use ChatbotPhp\DTO\Assistant\AssistantAttachFileDTO;
+use ChatbotPhp\DTO\Assistant\AssistantDetachFileDTO;
 use ChatbotPhp\DTO\Assistant\AssistantViewDTO;
 use ChatbotPhp\Services\AssistantService;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -82,7 +83,7 @@ class AssistantServiceTest extends TestCase
             '"createdAt": "2024-01-15 10:30:00"}}', $result);
     }
 
-    public function testUpdateAssistantWithSuccess(): void
+    public function testAttachAssistantWithSuccess(): void
     {
         $mockResponse = $this->createMock(ResponseInterface::class);
         $mockResponse
@@ -103,7 +104,7 @@ class AssistantServiceTest extends TestCase
             '"fileIds": ["fil-abc123", "fil-def456"]}}', $result);
     }
 
-    public function testUpdateAssistantWithEmptyFileIds(): void
+    public function testAttachAssistantWithEmptyFileIds(): void
     {
         $mockResponse = $this->createMock(ResponseInterface::class);
         $mockResponse
@@ -120,6 +121,25 @@ class AssistantServiceTest extends TestCase
         $result = $service->attachFiles($dto);
 
         $this->assertEquals('{"success": true, "data": {"assistantId": "ast_abc123", "fileIds": []}}', $result);
+    }
+
+    public function testDetachAssistantFilesWithSuccess(): void
+    {
+        $mockResponse = $this->createMock(ResponseInterface::class);
+        $mockResponse
+            ->method('getContent')
+            ->willReturn('{"success": true, "data": {"assistantId": "ast_abc123","fileId": "file_fil123"');
+
+        $mockHttpClient = $this->createMock(HttpClientInterface::class);
+        $mockHttpClient->method('request')->willReturn($mockResponse);
+
+         /** @var MockObject&HttpClientInterface $mockHttpClient */
+        $service = new AssistantService($mockHttpClient, new ApiUrls());
+        $dto = new AssistantDetachFileDTO('ast_abc123', 'file_fil123');
+
+        $result = $service->detachFile($dto);
+
+        $this->assertEquals('{"success": true, "data": {"assistantId": "ast_abc123","fileId": "file_fil123"', $result);
     }
 
     public function testDeleteAssistantWithSuccess(): void

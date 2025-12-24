@@ -5,6 +5,7 @@ namespace ChatbotPhp;
 use ChatbotPhp\DTO\Assistant\AssistantCreateDTO;
 use ChatbotPhp\DTO\Assistant\AssistantDeleteDTO;
 use ChatbotPhp\DTO\Assistant\AssistantAttachFileDTO;
+use ChatbotPhp\DTO\Assistant\AssistantDetachFileDTO;
 use ChatbotPhp\DTO\Assistant\AssistantViewDTO;
 use ChatbotPhp\DTO\Context\ContextCreateDTO;
 use ChatbotPhp\DTO\Context\ContextDeleteDTO;
@@ -38,6 +39,7 @@ interface ChatbotClientInterface
     public function createAssistant(AssistantCreateDTO $dto): string;
     public function viewAssistant(AssistantViewDTO $dto): string;
     public function attachAssistantFiles(AssistantAttachFileDTO $dto): string;
+    public function detachAssistantFiles(AssistantDetachFileDTO $dot): string;
     public function deleteAssistant(AssistantDeleteDTO $dto): string;
 
     public function makeConversation(ConversationMakeDTO $dto): string;

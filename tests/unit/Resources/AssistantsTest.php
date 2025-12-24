@@ -5,6 +5,7 @@ namespace ChatbotPhp\Tests\Resources;
 use ChatbotPhp\DTO\Assistant\AssistantCreateDTO;
 use ChatbotPhp\DTO\Assistant\AssistantDeleteDTO;
 use ChatbotPhp\DTO\Assistant\AssistantAttachFileDTO;
+use ChatbotPhp\DTO\Assistant\AssistantDetachFileDTO;
 use ChatbotPhp\DTO\Assistant\AssistantViewDTO;
 use ChatbotPhp\Resources\Assistants;
 use ChatbotPhp\Services\AssistantService;
@@ -100,6 +101,28 @@ class AssistantsTest extends TestCase
         $result = $this->assistants->attachFiles([
             'assistant_id' => $assistantId,
             'file_ids' => $fileIds
+        ]);
+
+        $this->assertEquals($expectedResponse, $result);
+    }
+
+    public function testDetachFiles(): void
+    {
+        $assistantId = 'ast_123';
+        $fileId = 'file_123';
+        $expectedResponse = '{"success": true, "data": {"assistantId":"ast_123"}}';
+
+        $this->assistantService
+            ->expects($this->once())
+            ->method('detachFile')
+            ->with($this->callback(function (AssistantDetachFileDTO $dto) use ($assistantId, $fileId) {
+                return $dto->assistantId === $assistantId && $dto->fileId === $fileId;
+            }))
+            ->willReturn($expectedResponse);
+
+        $result = $this->assistants->detachFile([
+            'assistant_id' => $assistantId,
+            'file_id' => $fileId
         ]);
 
         $this->assertEquals($expectedResponse, $result);

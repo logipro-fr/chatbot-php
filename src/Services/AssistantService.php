@@ -6,6 +6,7 @@ use ChatbotPhp\ApiUrls;
 use ChatbotPhp\DTO\Assistant\AssistantCreateDTO;
 use ChatbotPhp\DTO\Assistant\AssistantDeleteDTO;
 use ChatbotPhp\DTO\Assistant\AssistantAttachFileDTO;
+use ChatbotPhp\DTO\Assistant\AssistantDetachFileDTO;
 use ChatbotPhp\DTO\Assistant\AssistantViewDTO;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
@@ -46,6 +47,15 @@ class AssistantService
                 'file_ids' => $dto->fileIds
             ]
         ]);
+        return $response->getContent();
+    }
+
+    public function detachFile(AssistantDetachFileDTO $dto): string
+    {
+        $response = $this->httpClient->request(
+            'DELETE',
+            $this->apiUrls->detachAssistantFiles($dto->assistantId, $dto->fileId)
+        );
         return $response->getContent();
     }
 

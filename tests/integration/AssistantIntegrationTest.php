@@ -5,7 +5,9 @@ namespace Tests\Integration;
 use ChatbotPhp\DTO\Assistant\AssistantCreateDTO;
 use ChatbotPhp\DTO\Assistant\AssistantDeleteDTO;
 use ChatbotPhp\DTO\Assistant\AssistantAttachFileDTO;
+use ChatbotPhp\DTO\Assistant\AssistantDetachFileDTO;
 use ChatbotPhp\DTO\Assistant\AssistantViewDTO;
+use Exception;
 
 class AssistantIntegrationTest extends BaseIntegrationTestCase
 {
@@ -17,8 +19,10 @@ class AssistantIntegrationTest extends BaseIntegrationTestCase
         $fileIds = ['file-KNpZsP3NBAajzDETBqZQpX'];
 
         $dto = new AssistantCreateDTO($contextId, $fileIds);
-
         $result = $this->chatbotClient->createAssistant($dto);
+
+
+
 
         $responseData = $this->assertSuccessfulResponse($result);
 
@@ -76,6 +80,17 @@ class AssistantIntegrationTest extends BaseIntegrationTestCase
         if (isset($responseData['data']['fileIds'])) {
             $this->assertIsArray($responseData['data']['fileIds']);
         }
+    }
+
+    public function testDetachAssistantFiles(): void
+    {
+        $assistantId = self::$createdAssistantId ?? 'ast_abc123';
+        $fileId = 'file-abc123';
+        $dto = new AssistantDetachFileDTO($assistantId, $fileId);
+
+        $result = $this->chatbotClient->detachAssistantFiles($dto);
+
+        $this->assertSuccessfulResponse($result);
     }
 
     public function testDeleteAssistant(): void

@@ -1,0 +1,10 @@
+{
+  "success": true,
+  "data": {
+    "assistantId": "ast_abc123",
+    "fileIds": [
+      "fil-abc123"
+    ]
+  }
+}
+
