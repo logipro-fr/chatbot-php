@@ -23,8 +23,8 @@ class ApiUrls
     public const DELETE_FILE = '/v1/file/delete';
 
     public const CREATE_ASSISTANT = '/v1/assistant/create-from-context';
-    public const ATTACH_ASSISTANT_FILE = '/v1/assistant/%s/files';
-    public const DETACH_ASSISTANT_FILE = '/v1/assistant/%s/files/%s';
+    public const ATTACH_ASSISTANT_FILE = '/v1/assistant/%s/attach/files';
+    public const DETACH_ASSISTANT_FILE = '/v1/assistant/%s/detach/file/%s';
     public const VIEW_ASSISTANT = '/v1/assistant/%s';
     public const DELETE_ASSISTANT = '/v1/assistant/%s/delete';
 

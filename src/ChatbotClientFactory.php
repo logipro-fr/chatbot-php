@@ -62,7 +62,7 @@ class ChatbotClientFactory
         if ($method == 'PUT' && str_contains($url, '/v1/assistant/') && str_ends_with($url, '/files')) {
             return $this->putV1AssistantAttachFileMockResponse();
         }
-        if ($method == 'DELETE' && str_contains($url, '/v1/assistant/') && str_contains($url, '/files')) {
+        if ($method == 'DELETE' && str_contains($url, '/v1/assistant/') && str_contains($url, '/file')) {
             return $this->deleteV1AssistantDetachFileMockResponse();
         }
         if ($method == 'DELETE' && str_contains($url, '/v1/assistant/') && str_ends_with($url, '/delete')) {
