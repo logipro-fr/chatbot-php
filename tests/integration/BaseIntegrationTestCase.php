@@ -5,19 +5,22 @@ namespace Tests\Integration;
 use ChatbotPhp\ApiUrls;
 use ChatbotPhp\ChatbotClient;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\HttpClient\CurlHttpClient;
 
 abstract class BaseIntegrationTestCase extends TestCase
 {
     protected ChatbotClient $chatbotClient;
     protected string $baseUrl;
+    protected CurlHttpClient $curl;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $envUrl = $_ENV['CHATBOT_API_URL'] ?? null;
-        $this->baseUrl = is_string($envUrl) ? $envUrl : 'http://172.17.0.1:11080/api';
-        $this->chatbotClient = new ChatbotClient(null, new ApiUrls($this->baseUrl));
+        $this->baseUrl = is_string($envUrl) ? $envUrl : 'http://172.21.0.1:11080/api';
+        $this->curl = new CurlHttpClient();
+        $this->chatbotClient = new ChatbotClient($this->curl, new ApiUrls($this->baseUrl));
     }
 
     protected function getBaseUrl(): string

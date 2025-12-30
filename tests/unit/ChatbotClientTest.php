@@ -7,7 +7,8 @@ use ChatbotPhp\ChatbotClient;
 use ChatbotPhp\ChatbotClientFactory;
 use ChatbotPhp\DTO\Assistant\AssistantCreateDTO;
 use ChatbotPhp\DTO\Assistant\AssistantDeleteDTO;
-use ChatbotPhp\DTO\Assistant\AssistantUpdateDTO;
+use ChatbotPhp\DTO\Assistant\AssistantAttachFileDTO;
+use ChatbotPhp\DTO\Assistant\AssistantDetachFileDTO;
 use ChatbotPhp\DTO\Assistant\AssistantViewDTO;
 use ChatbotPhp\DTO\Context\ContextCreateDTO;
 use ChatbotPhp\DTO\Context\ContextDeleteDTO;
@@ -265,13 +266,13 @@ class ChatbotClientTest extends TestCase
         $this->assertIsArray($data['fileIds']);
     }
 
-    public function testUpdateAssistant(): void
+    public function testAttachAssistantFiles(): void
     {
         $assistantId = 'ast_abc123';
         $fileIds = ['fil-abc123', 'fil-def456'];
-        $dto = new AssistantUpdateDTO($assistantId, $fileIds);
+        $dto = new AssistantAttachFileDTO($assistantId, $fileIds);
 
-        $response = $this->client->updateAssistant($dto);
+        $response = $this->client->attachAssistantFiles($dto);
 
         /** @var array<string, mixed> */
         $responseData = json_decode($response, true);
@@ -283,6 +284,26 @@ class ChatbotClientTest extends TestCase
         $this->assertTrue(isset($data['fileIds']));
         $this->assertIsArray($data['fileIds']);
     }
+
+    public function testDetachAssistantFiles(): void
+    {
+        $assistantId = 'ast_abc123';
+        $fileId = 'file-fil123';
+        $dto = new AssistantDetachFileDTO($assistantId, $fileId);
+
+        $response = $this->client->detachAssistantFiles($dto);
+
+        /** @var array<string, mixed> */
+        $responseData = json_decode($response, true);
+        $this->assertTrue(isset($responseData['success']));
+        $this->assertTrue($responseData['success']);
+        $data = $responseData['data'];
+        $this->assertIsArray($data);
+        $this->assertTrue(isset($data['assistantId']));
+        $this->assertTrue(isset($data['fileIds']));
+        $this->assertIsArray($data['fileIds']);
+    }
+
 
     public function testDeleteAssistant(): void
     {

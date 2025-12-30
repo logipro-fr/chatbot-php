@@ -4,38 +4,56 @@ namespace Tests\Integration;
 
 use ChatbotPhp\DTO\Assistant\AssistantCreateDTO;
 use ChatbotPhp\DTO\Assistant\AssistantDeleteDTO;
-use ChatbotPhp\DTO\Assistant\AssistantUpdateDTO;
+use ChatbotPhp\DTO\Assistant\AssistantAttachFileDTO;
+use ChatbotPhp\DTO\Assistant\AssistantDetachFileDTO;
 use ChatbotPhp\DTO\Assistant\AssistantViewDTO;
+use ChatbotPhp\DTO\Context\ContextCreateDTO;
+use ChatbotPhp\DTO\Context\ContextDeleteDTO;
+use Exception;
 
 class AssistantIntegrationTest extends BaseIntegrationTestCase
 {
-    private static ?string $createdAssistantId = null;
+    private string $createdAssistantId = '';
+    private string $contextId = '';
 
-    public function testCreateAssistant(): void
+    protected function setUp(): void
     {
-        $contextId = 'cot_68e7aeb0a1f43';
-        $fileIds = ['file-KNpZsP3NBAajzDETBqZQpX'];
+        parent::setUp();
 
-        $dto = new AssistantCreateDTO($contextId, $fileIds);
+        //Context
+        $dtoContextCreate = new ContextCreateDTO('Integration Test - Assistant Creation and Delete');
+        $response = $this->chatbotClient->createContext($dtoContextCreate);
+        /** @var array{success: bool, data: array{contextId: string}} $dataContext */
+        $dataContext = json_decode($response, true);
+        $this->contextId = $dataContext['data']['contextId'];
 
-        $result = $this->chatbotClient->createAssistant($dto);
-
-        $responseData = $this->assertSuccessfulResponse($result);
-
-        $this->assertIsArray($responseData['data']);
-        $this->assertArrayHasKey('assistantId', $responseData['data']);
-        $this->assertArrayHasKey('externalAssistantId', $responseData['data']);
-        $this->assertNotEmpty($responseData['data']['assistantId']);
-
-        $this->assertIsString($responseData['data']['assistantId']);
-        $this->assertStringStartsWith('ast_', $responseData['data']['assistantId']);
-
-        self::$createdAssistantId = $responseData['data']['assistantId'];
+        //Assistant
+        $dto = new AssistantCreateDTO($this->contextId);
+            $result = $this->chatbotClient->createAssistant($dto);
+        /** @var array{success: bool, data: array{assistantId: string}} $dataAssistant */
+        $dataAssistant = json_decode($result, true);
+        $this->createdAssistantId = $dataAssistant['data']['assistantId'];
     }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        //Delete Assistant
+        $dto = new AssistantDeleteDTO($this->createdAssistantId);
+        $this->chatbotClient->deleteAssistant($dto);
+        $this->createdAssistantId = '';
+
+        //Delete Context
+        $dtoContextDelete = new ContextDeleteDTO($this->contextId);
+        $this->chatbotClient->deleteContext($dtoContextDelete);
+        $this->contextId = '';
+    }
+
 
     public function testViewAssistant(): void
     {
-        $assistantId = self::$createdAssistantId ?? 'ast_abc123';
+        $assistantId = $this->createdAssistantId;
 
         $dto = new AssistantViewDTO($assistantId);
 
@@ -60,13 +78,13 @@ class AssistantIntegrationTest extends BaseIntegrationTestCase
         }
     }
 
-    public function testUpdateAssistant(): void
+    public function testAttachAssistantFiles(): void
     {
-        $assistantId = self::$createdAssistantId ?? 'ast_abc123';
-        $fileIds = ['fil-abc123', 'fil-def456'];
-        $dto = new AssistantUpdateDTO($assistantId, $fileIds);
+        $assistantId = $this->createdAssistantId;
+        $fileIds = ['file-LcwTe45pSDCd1tCUqgw2kJ'];
+        $dto = new AssistantAttachFileDTO($assistantId, $fileIds);
 
-        $result = $this->chatbotClient->updateAssistant($dto);
+        $result = $this->chatbotClient->attachAssistantFiles($dto);
 
         $responseData = $this->assertSuccessfulResponse($result);
 
@@ -78,18 +96,19 @@ class AssistantIntegrationTest extends BaseIntegrationTestCase
         }
     }
 
-    public function testDeleteAssistant(): void
+    public function testDetachAssistantFiles(): void
     {
-        $assistantId = self::$createdAssistantId ?? 'ast_68f638a37c2474.79919725';
+        $assistantId = $this->createdAssistantId;
+        $fileIds = ['file-LcwTe45pSDCd1tCUqgw2kJ'];
+        $fileId = 'file-LcwTe45pSDCd1tCUqgw2kJ';
 
-        $dto = new AssistantDeleteDTO($assistantId);
+        $dtoAttach = new AssistantAttachFileDTO($assistantId, $fileIds);
 
-        $result = $this->chatbotClient->deleteAssistant($dto);
+        $this->chatbotClient->attachAssistantFiles($dtoAttach);
+        $dto = new AssistantDetachFileDTO($assistantId, $fileId);
 
-        $responseData = $this->assertSuccessfulResponse($result);
+        $result = $this->chatbotClient->detachAssistantFiles($dto);
 
-        $this->assertIsArray($responseData['data']);
-        $this->assertArrayHasKey('assistantId', $responseData['data']);
-        $this->assertArrayHasKey('externalAssistantId', $responseData['data']);
+        $this->assertSuccessfulResponse($result);
     }
 }

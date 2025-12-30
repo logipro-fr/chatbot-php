@@ -4,7 +4,8 @@ namespace ChatbotPhp\Resources;
 
 use ChatbotPhp\DTO\Assistant\AssistantCreateDTO;
 use ChatbotPhp\DTO\Assistant\AssistantDeleteDTO;
-use ChatbotPhp\DTO\Assistant\AssistantUpdateDTO;
+use ChatbotPhp\DTO\Assistant\AssistantAttachFileDTO;
+use ChatbotPhp\DTO\Assistant\AssistantDetachFileDTO;
 use ChatbotPhp\DTO\Assistant\AssistantViewDTO;
 use ChatbotPhp\Services\AssistantService;
 
@@ -47,7 +48,7 @@ class Assistants
     /**
      * @param array<string, mixed> $parameters
      */
-    public function update(array $parameters): string
+    public function attachFiles(array $parameters): string
     {
         /** @var string $assistantId */
         $assistantId = $parameters['assistant_id'];
@@ -59,9 +60,24 @@ class Assistants
                 $fileIds[] = $fileId;
             }
         }
-        $dto = new AssistantUpdateDTO($assistantId, $fileIds);
+        $dto = new AssistantAttachFileDTO($assistantId, $fileIds);
 
-        return $this->assistantService->update($dto);
+        return $this->assistantService->attachFiles($dto);
+    }
+
+    /**
+     * @param array<string, mixed> $parameters
+    */
+    public function detachFile(array $parameters): string
+    {
+        /** @var string $assistantId */
+        $assistantId = $parameters['assistant_id'];
+        /** @var string $fileId */
+        $fileId = $parameters['file_id'];
+
+        $dto = new AssistantDetachFileDTO($assistantId, $fileId);
+
+        return $this->assistantService->detachFile($dto);
     }
 
     public function delete(string $assistantId): string

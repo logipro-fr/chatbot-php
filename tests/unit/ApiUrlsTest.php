@@ -75,14 +75,26 @@ class ApiUrlsTest extends TestCase
         );
     }
 
-    public function testUpdateAssistant(): void
+    public function testAttachAssistantFiles(): void
     {
         $assistantId = 'ast_abc123';
-        $expectedUrl = ApiUrls::BASE_URL_PROD . sprintf(ApiUrls::UPDATE_ASSISTANT, $assistantId);
+        $expectedUrl = ApiUrls::BASE_URL_PROD . sprintf(ApiUrls::ATTACH_ASSISTANT_FILE, $assistantId);
 
         $this->assertSame(
             $expectedUrl,
-            (new ApiUrls())->updateAssistant($assistantId)
+            (new ApiUrls())->attachAssistantFiles($assistantId)
+        );
+    }
+
+    public function testDetachAssistantFiles(): void
+    {
+        $assistantId = 'ast_abc123';
+        $fileId = 'file-abc123';
+        $expectedUrl = ApiUrls::BASE_URL_PROD . sprintf(ApiUrls::DETACH_ASSISTANT_FILE, $assistantId, $fileId);
+
+        $this->assertSame(
+            $expectedUrl,
+            (new ApiUrls())->detachAssistantFiles($assistantId, $fileId)
         );
     }
 

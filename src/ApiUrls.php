@@ -23,7 +23,8 @@ class ApiUrls
     public const DELETE_FILE = '/v1/file/delete';
 
     public const CREATE_ASSISTANT = '/v1/assistant/create-from-context';
-    public const UPDATE_ASSISTANT = '/v1/assistant/%s/files';
+    public const ATTACH_ASSISTANT_FILE = '/v1/assistant/%s/attach/files';
+    public const DETACH_ASSISTANT_FILE = '/v1/assistant/%s/detach/file/%s';
     public const VIEW_ASSISTANT = '/v1/assistant/%s';
     public const DELETE_ASSISTANT = '/v1/assistant/%s/delete';
 
@@ -114,9 +115,14 @@ class ApiUrls
         return $this->baseUrl . sprintf(self::VIEW_ASSISTANT, $assistantId);
     }
 
-    public function updateAssistant(string $assistantId): string
+    public function attachAssistantFiles(string $assistantId): string
     {
-        return $this->baseUrl . sprintf(self::UPDATE_ASSISTANT, $assistantId);
+        return $this->baseUrl . sprintf(self::ATTACH_ASSISTANT_FILE, $assistantId);
+    }
+
+    public function detachAssistantFiles(string $assistantId, string $fileId): string
+    {
+        return $this->baseUrl . sprintf(self::DETACH_ASSISTANT_FILE, $assistantId, $fileId);
     }
 
     public function deleteAssistant(string $assistantId): string
