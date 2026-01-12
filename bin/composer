@@ -12,6 +12,4 @@ GROUP_ID=$(id -g)
 docker run ${moinsit} --rm \
   --volume $PWD:/app \
   --user $USER_ID:$GROUP_ID \
-  --name composer-running-script \
-  -v "$PWD":/usr/src \
   composer:2.8.6 composer $@
